@@ -1,0 +1,11 @@
+{
+  "name": "rover-bot",
+  "version": "1.0.0",
+  "description": "rpi rover bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Justin C Kirk",
+  "license": "ISC"
+}
