@@ -4,7 +4,7 @@
   "description": "rpi rover bot",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/server.js"
+    "bot-dev": "nodemon server/server.js"
   },
   "author": "Justin C Kirk",
   "license": "ISC",
