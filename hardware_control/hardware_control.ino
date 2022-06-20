@@ -12,7 +12,7 @@ int rover_spd;
 void setup() {
   Serial.begin(115200);
   Setup_Motors();
-  Rover_Stop();
+  rover_stop();
   Setup_Leds();
   delay(1000);
   leds_off();
@@ -25,10 +25,15 @@ void loop() {
 
   if (new_event == true) {
     strcpy(temp_chars, received_chars);
-//    move_rover();
+    
     parse_data();
-    print_data();
+//    print_data();
+
+    rover_move(rover_dir, rover_spd);
+      
     new_event = false;
+  } else {
+    // stop motor
   }
 
 }
@@ -43,6 +48,7 @@ void get_data() {
 
   while (Serial.available() > 0 && new_event == false) {
     received = Serial.read();
+    
     if (recv_in_progress == true) {
 
       if (received != end_marker) {
@@ -88,42 +94,45 @@ void parse_data() {      // split the data into its parts
 //    strtokIndex = strtok(tempChars,",");      // get the first part - the string
 //    strcpy(messageFromPC, strtokIndex); // copy it to messageFromPC
  
-    strtokIndex = strtok(NULL, ","); // this continues where the previous call left off
+    strtokIndex = strtok(temp_chars, ","); // this continues where the previous call left off
+    Serial.print(strtokIndex);
+    Serial.print("   ");    
     rover_dir = atoi(strtokIndex);     // convert this part to an integer
-
+    
     strtokIndex = strtok(NULL, ",");
+    Serial.print(strtokIndex);
     rover_spd = atoi(strtokIndex);     // convert this part to a float
-
+    Serial.println(); 
 }
 
 
-int rover_speed = 200;
-
-void move_rover() {
-
-  char rover_direction = temp_chars[0];
-  char rover_bearing = temp_chars[1];
-
-  if (rover_direction == '1') {
-    Rover_Forward(rover_speed);
-  } else if (rover_direction == '2') {
-    Rover_Backward(rover_speed);
-  } else if (rover_direction == '0') {
-    Rover_Stop();
-  }
-
-  if (rover_bearing == '1') {
-    Rover_Left(60);
-  } else if (rover_bearing == '2') {
-    Rover_Right(120);
-  } else if (rover_bearing == '0') {
-    Rover_Straight(90);
-  }
-
-  Serial.print("DIR: ");
-  Serial.print(rover_direction);
-  Serial.print("  ");
-  Serial.print("BER: ");
-  Serial.println(rover_bearing);
-
-}
+//int rover_speed = 200;
+//
+//void move_rover() {
+//
+//  char rover_direction = temp_chars[0];
+//  char rover_bearing = temp_chars[1];
+//
+//  if (rover_direction == '1') {
+//    Rover_Forward(rover_speed);
+//  } else if (rover_direction == '2') {
+//    Rover_Backward(rover_speed);
+//  } else if (rover_direction == '0') {
+//    Rover_Stop();
+//  }
+//
+//  if (rover_bearing == '1') {
+//    Rover_Left(60);
+//  } else if (rover_bearing == '2') {
+//    Rover_Right(120);
+//  } else if (rover_bearing == '0') {
+//    Rover_Straight(90);
+//  }
+//
+//  Serial.print("DIR: ");
+//  Serial.print(rover_direction);
+//  Serial.print("  ");
+//  Serial.print("BER: ");
+//  Serial.println(rover_bearing);
+//
+//}
