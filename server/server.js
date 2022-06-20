@@ -1,36 +1,21 @@
-//const express = require('express');
-//const app = express();
+const express = require('express');
+var cors = require('cors');
+const app = express();
+app.use(cors());
 const { SerialPort } = require('serialport');
 const port = 3000;
-const WLAN_0 = '192.168.1.93';
-const WLAN_1 = '192.168.1.110';
+
 
 const nano = new SerialPort({
   path: '/dev/ttyUSB0',
   baudRate: 115200,
 });
 
-
-setInterval(() => (nano.write('<1,100>')), 2000);
-
-
-
-//~ nano.on('readable', () => {
-    //~ console.log('DATA:', nano.read());
-//~ });
-
-
-//nano.on('data', (data) => {
-//    console.log('NANO SENT:', data);
-//});
-
-/*
-app.post('/rover-move', (req, res) => {
-    console.log(req.data);
+app.get('/bot-move/:dir/:spd', (req, res) => {
+    console.log(req.params.spd);
+    nano.write(`<${req.params.dir},${req.params.spd}>`);
 });
-
 
 app.listen(port, () => {
-    console.log(`Listening at port ${port}`);
+    console.log(`Listening at http://localhost:${port}`);
 });
-*/

@@ -4,12 +4,14 @@
   "description": "rpi rover bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "rover-dev": "nodemon server/server.js"
   },
   "author": "Justin C Kirk",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "pigpio": "^3.3.1",
     "serialport": "^10.4.0"
