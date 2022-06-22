@@ -7,6 +7,7 @@ int event_code = 0;
 boolean new_event = false;
 
 int rover_dir;
+int rover_str;
 int rover_spd;
 
 void setup() {
@@ -14,28 +15,21 @@ void setup() {
   Setup_Motors();
   rover_stop();
   Setup_Leds();
-  delay(1000);
-  leds_off();
+  leds_off();  
+  startup_leds();
 }
 
 
 void loop() {
 
   get_data();
-
+  
   if (new_event == true) {
     strcpy(temp_chars, received_chars);
-    
     parse_data();
-//    print_data();
-
-    rover_move(rover_dir, rover_spd);
-      
+    rover_move(rover_dir, rover_str, rover_spd);
     new_event = false;
-  } else {
-    // stop motor
-  }
-
+  } 
 }
 
 void get_data() {
@@ -75,64 +69,30 @@ void get_data() {
 }
 
 void print_data() {
-
   Serial.print("DIR: ");
   Serial.print(rover_dir);
+  Serial.print("  STR: ");
+  Serial.print(rover_str);
   Serial.print("  SPD: ");
   Serial.println(rover_spd);
-//  for (int i = 0; i < char_num; i++) {
-//    Serial.print(temp_chars[i]);
-//    //    temp_chars[i] = 0;
-//  }
-//  Serial.println();
 }
 
-void parse_data() {      // split the data into its parts
+void parse_data() {
 
     char * strtokIndex;
 
-//    strtokIndex = strtok(tempChars,",");      // get the first part - the string
-//    strcpy(messageFromPC, strtokIndex); // copy it to messageFromPC
- 
-    strtokIndex = strtok(temp_chars, ","); // this continues where the previous call left off
-    Serial.print(strtokIndex);
-    Serial.print("   ");    
-    rover_dir = atoi(strtokIndex);     // convert this part to an integer
+    strtokIndex = strtok(temp_chars, ",");
+//    Serial.print(strtokIndex);
+//    Serial.print("   ");
+    rover_dir = atoi(strtokIndex);
+
+    strtokIndex = strtok(NULL, ",");
+//    Serial.print(strtokIndex);
+//    Serial.print("   ");
+    rover_str = atoi(strtokIndex);
     
     strtokIndex = strtok(NULL, ",");
-    Serial.print(strtokIndex);
-    rover_spd = atoi(strtokIndex);     // convert this part to a float
-    Serial.println(); 
+//    Serial.print(strtokIndex);
+    rover_spd = atoi(strtokIndex);
+//    Serial.println(); 
 }
-
-
-//int rover_speed = 200;
-//
-//void move_rover() {
-//
-//  char rover_direction = temp_chars[0];
-//  char rover_bearing = temp_chars[1];
-//
-//  if (rover_direction == '1') {
-//    Rover_Forward(rover_speed);
-//  } else if (rover_direction == '2') {
-//    Rover_Backward(rover_speed);
-//  } else if (rover_direction == '0') {
-//    Rover_Stop();
-//  }
-//
-//  if (rover_bearing == '1') {
-//    Rover_Left(60);
-//  } else if (rover_bearing == '2') {
-//    Rover_Right(120);
-//  } else if (rover_bearing == '0') {
-//    Rover_Straight(90);
-//  }
-//
-//  Serial.print("DIR: ");
-//  Serial.print(rover_direction);
-//  Serial.print("  ");
-//  Serial.print("BER: ");
-//  Serial.println(rover_bearing);
-//
-//}
